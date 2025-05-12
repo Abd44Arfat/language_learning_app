@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:launguagelearning/features/auth/views/signup_screen.dart';
-import 'package:launguagelearning/features/home/home_screen.dart';
+import 'package:launguagelearning/features/auth/views/signIn_screen.dart';
 
-class SignIn extends StatelessWidget {
-  const SignIn({super.key});
-  static const String routeName = '/signin';
+class Signup extends StatelessWidget {
+  const Signup({super.key});
+  static const String routeName = '/signup';
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +72,7 @@ class SignIn extends StatelessWidget {
                 right: 36,
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: 'Your Email',
+                    hintText: 'Your Name',
                     filled: true,
                     fillColor: Colors.grey.shade200,
                     border: OutlineInputBorder(
@@ -87,12 +86,48 @@ class SignIn extends StatelessWidget {
               // Password Field
               Positioned(
                 left: 36,
-                top: 380,
+                top: 370,
                 right: 36,
                 child: TextField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    hintText: 'Email',
+                    filled: true,
+                    fillColor: Colors.grey.shade200,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+              ),
+
+ Positioned(
+                left: 36,
+                top: 440,
+                right: 36,
+                child: TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'password',
+                    filled: true,
+                    fillColor: Colors.grey.shade200,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+              ),
+
+Positioned(
+                left: 36,
+                top: 510,
+                right: 36,
+                child: TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'confirm password',
                     filled: true,
                     fillColor: Colors.grey.shade200,
                     border: OutlineInputBorder(
@@ -106,16 +141,16 @@ class SignIn extends StatelessWidget {
               // Sign In Button + Icon
               Positioned(
                 left: 36,
-                top: 579,
+                top: 600,
                 child: GestureDetector(
                      onTap: () {
-                                 Navigator.pushNamed(context, Homescreen.routeName);
+                                 Navigator.pushNamed(context, SignIn.routeName);
 
                       },
                   child: Row(
                     children: [
                       Text(
-                        'Sign in',
+                        'Sign Up',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 32,
@@ -148,10 +183,12 @@ class SignIn extends StatelessWidget {
                 top: 740,
                 child: GestureDetector(
                   onTap: () {
-             Navigator.pushNamed(context, Signup.routeName);
+
+                                 Navigator.pushNamed(context, SignIn.routeName);
+
                   },
                   child: Text(
-                    'Sign Up',
+                    'Sign In',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
@@ -163,24 +200,7 @@ class SignIn extends StatelessWidget {
               ),
 
               // Forgot Password Link
-              Positioned(
-                left: 184,
-                top: 740,
-                child: GestureDetector(
-                  onTap: () {
-                    // روح لشاشة استرجاع كلمة المرور
-                  },
-                  child: Text(
-                    'Forgot Password',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontFamily: 'Futura Hv BT',
-                      height: 1.2,
-                    ),
-                  ),
-                ),
-              ),
+             
             ],
           ),
         ),

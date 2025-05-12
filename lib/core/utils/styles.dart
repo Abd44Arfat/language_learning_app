@@ -145,7 +145,7 @@ class TextStyles {
     color: Colors.white,
   );
       static TextStyle font30WhiteBold = TextStyle(
-    fontSize: 30.sp,
+    fontSize: 20,
     fontWeight: FontWeightHelper.bold,
     color: Colors.white,
   );
@@ -153,7 +153,7 @@ class TextStyles {
 
   static TextStyle font16Blackbold = TextStyle(
 
-    fontSize: 16.sp,
+    fontSize: 25,
     fontWeight: FontWeightHelper.bold,
     color: Colors.black,
   );
