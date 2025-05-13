@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:launguagelearning/core/helper-function/on_generate_route.dart';
+import 'package:launguagelearning/features/auth/views/signIn_screen.dart';
 import 'package:launguagelearning/features/auth/views/splash_screen.dart';
 import 'package:launguagelearning/features/question/audioQuestion/audio_Question.dart';
 import 'package:launguagelearning/features/question/imageQuestion/imageQuestion.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
      
-    initialRoute: SectionsScreen.routeName,
+    initialRoute: SignIn.routeName,
     onGenerateRoute: onGenerateRoute,
     );
   }
