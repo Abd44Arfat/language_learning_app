@@ -15,7 +15,7 @@ class Homescreen extends StatelessWidget {
     {
       'title': 'LISTENING',
       'icon': Icons.star,
-      'background': Colors.indigoAccent,
+     'background': Colors.blue,
     },
     {
       'title': 'READING',
@@ -27,11 +27,7 @@ class Homescreen extends StatelessWidget {
       'icon': Icons.military_tech,
       'background': Colors.red,
     },
-    {
-      'title': 'WRITING',
-      'icon': Icons.school,
-      'background': Colors.blue,
-    },
+  
   ];
 
   @override
