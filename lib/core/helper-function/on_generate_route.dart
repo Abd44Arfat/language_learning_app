@@ -4,6 +4,7 @@ import 'package:launguagelearning/features/auth/views/signIn_screen.dart';
 import 'package:launguagelearning/features/auth/views/signup_screen.dart';
 import 'package:launguagelearning/features/auth/views/splash_screen.dart';
 import 'package:launguagelearning/features/home/home_screen.dart';
+import 'package:launguagelearning/features/levels/levels_screen.dart';
 import 'package:launguagelearning/features/question/audioQuestion/audio_Question.dart';
 import 'package:launguagelearning/features/question/imageQuestion/imageQuestion.dart';
 import 'package:launguagelearning/features/question/reading/questionscreen.dart';
@@ -40,6 +41,10 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
 
   case SectionsScreen.routeName:
       return MaterialPageRoute(builder: (context) =>  SectionsScreen());
+
+  case LevelsScreen.routeName:
+      return MaterialPageRoute(builder: (context) =>  LevelsScreen());
+
 
     default:
       return MaterialPageRoute(builder: (context) => const Scaffold());

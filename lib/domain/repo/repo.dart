@@ -16,7 +16,7 @@ class Repository {
   ) async {
     try {
       final response = await api.post(
-       ApiUrls.getAllCurrencies,
+       ApiUrls.login,
         data: {'email': email, 'password': password},
       );
       // final prefs = await SharedPreferences.getInstance();

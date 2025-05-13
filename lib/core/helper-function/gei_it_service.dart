@@ -9,7 +9,6 @@ final getIt = GetIt.instance;
 
 void setupGetIt() {
   // Register DioClient as a singleton
-  getIt.registerSingleton<DioClient>(DioClient());
 
   // DioClient
   getIt.registerLazySingleton<DioClient>(() => DioClient());
