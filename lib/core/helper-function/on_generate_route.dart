@@ -39,16 +39,25 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
             ),
       );
     case QuestionScreen.routeName:
-      return MaterialPageRoute(builder: (context) => QuestionScreen());
+      final args = settings.arguments as Map<String, dynamic>;
+      return MaterialPageRoute(
+        builder: (context) => QuestionScreen(questions: args['questions']),
+      );
 
     case VocabularyScreen.routeName:
       return MaterialPageRoute(builder: (context) => VocabularyScreen());
 
     case ImageQuestionScreen.routeName:
-      return MaterialPageRoute(builder: (context) => ImageQuestionScreen());
+      final args = settings.arguments as Map<String, dynamic>;
+      return MaterialPageRoute(
+        builder: (context) => ImageQuestionScreen(questions: args['questions']),
+      );
 
     case AudioQuestionScreen.routeName:
-      return MaterialPageRoute(builder: (context) => AudioQuestionScreen());
+      final args = settings.arguments as Map<String, dynamic>;
+      return MaterialPageRoute(
+        builder: (context) => AudioQuestionScreen(questions: args['questions']),
+      );
 
     case SectionsScreen.routeName:
       final levelId = settings.arguments as int;

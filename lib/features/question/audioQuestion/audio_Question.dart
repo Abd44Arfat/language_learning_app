@@ -2,29 +2,16 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:launguagelearning/core/utils/styles.dart';
+import 'package:launguagelearning/data/models/question_model.dart';
 import 'package:launguagelearning/features/home/home_screen.dart';
 import 'package:launguagelearning/features/question/cubit/tracker_cubit.dart';
 import 'package:launguagelearning/features/question/reading/question_tracker.dart';
 
 class AudioQuestionScreen extends StatefulWidget {
-  AudioQuestionScreen({super.key});
+  AudioQuestionScreen({super.key, required this.questions});
   static const String routeName = '/audioQuestion';
 
-  final List<Question> questions = [
-    Question(
-      questionText: 'Listen and choose the correct word.',
-      audioPath: 'audios/good-morning.mp3', // Ensure this file exists in your assets
-      options: ['Eat', 'Good morning', 'Run', 'Sleep'],
-      correctAnswer: 'Good morning',
-    ),
-    Question(
-      questionText: 'Listen and choose the correct word.',
-      audioPath: 'audios/good-morning.mp3', // Ensure this file exists in your assets
-      options: ['Apple', 'Banana', 'Orange', 'Grape'],
-      correctAnswer: 'Orange',
-    ),
-    // Add more questions as needed
-  ];
+  final List<QuestionModel> questions;
 
   @override
   _AudioQuestionScreenState createState() => _AudioQuestionScreenState();
@@ -67,13 +54,14 @@ class _AudioQuestionScreenState extends State<AudioQuestionScreen> {
                 QuestionsTracker(totalQ: widget.questions.length),
                 const SizedBox(height: 10),
                 Text(
-                  question.questionText,
+                  question.questionContent,
                   style: TextStyles.font30WhiteBold,
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
-                    await audioPlayer.play(AssetSource(question.audioPath));
+                    // TODO: Implement audio playback based on question data
+                    // await audioPlayer.play(AssetSource(question.audioPath));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -85,18 +73,18 @@ class _AudioQuestionScreenState extends State<AudioQuestionScreen> {
                 const SizedBox(height: 20),
                 Expanded(
                   child: GridView.builder(
-                    itemCount: question.options.length,
+                    itemCount: question.choices.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
-                      childAspectRatio: 1.5, // Adjusted for text-based options
+                      childAspectRatio: 1.5,
                     ),
                     itemBuilder: (context, index) {
-                      final option = question.options[index];
+                      final choice = question.choices[index];
                       return BlocBuilder<ScoreTrackerCubit, ScoreTrackerState>(
                         builder: (context, scoreState) {
-                          final isCorrect = option == question.correctAnswer;
+                          final isCorrect = choice.isCorrect;
                           final isAnswerSelected = questionState.answerSelected;
                           final isSelected = scoreState.selectedAnswer == index;
 
@@ -117,7 +105,7 @@ class _AudioQuestionScreenState extends State<AudioQuestionScreen> {
                               }
                             },
                             child: QuestionItem(
-                              text: option,
+                              text: choice.content,
                               isSelected: isSelected,
                               backgroundColor: backgroundColor,
                             ),

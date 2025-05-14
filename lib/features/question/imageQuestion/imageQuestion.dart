@@ -1,37 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:launguagelearning/core/utils/styles.dart';
+import 'package:launguagelearning/data/models/question_model.dart';
 import 'package:launguagelearning/features/home/home_screen.dart';
 import 'package:launguagelearning/features/question/cubit/tracker_cubit.dart';
 import 'package:launguagelearning/features/question/reading/question_tracker.dart';
 
 class ImageQuestionScreen extends StatelessWidget {
-  ImageQuestionScreen({super.key});
+  ImageQuestionScreen({super.key, required this.questions});
   static const String routeName = '/imagequestion';
 
-  final List<Question> questions = [
-    Question(
-      questionText: 'Choose the Correct Answer?',
-      optionImages: [
-        'assets/images/drink.png',
-        'assets/images/eat.png',
-        'assets/images/run.png',
-        'assets/images/sleep.png',
-      ],
-      correctAnswer: 'eat',
-    ),
-    Question(
-      questionText: 'Choose the Correct Answer?',
-      optionImages: [
-        'assets/images/apple.png',
-        'assets/images/banana.png',
-        'assets/images/orange.png',
-        'assets/images/grape.png',
-      ],
-      correctAnswer: 'orange',
-    ),
-    // Add more questions as needed
-  ];
+  final List<QuestionModel> questions;
 
   @override
   Widget build(BuildContext context) {
@@ -60,38 +39,31 @@ class ImageQuestionScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 QuestionsTracker(totalQ: questions.length),
                 const SizedBox(height: 10),
-            
-                const SizedBox(height: 10),
                 Text(
-                  question.questionText,
+                  question.questionContent,
                   style: TextStyles.font30WhiteBold,
                 ),
                 const SizedBox(height: 10),
                 Expanded(
                   child: GridView.builder(
-                    itemCount: question.optionImages.length,
+                    itemCount: question.choices.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
-                      childAspectRatio: 1, // Adjusted for image-based options
+                      childAspectRatio: 1,
                     ),
                     itemBuilder: (context, index) {
-                      final optionImage = question.optionImages[index];
-                      final optionIdentifier = question.optionImages[index].split('/').last.split('.').first;
+                      final choice = question.choices[index];
                       return BlocBuilder<ScoreTrackerCubit, ScoreTrackerState>(
                         builder: (context, scoreState) {
-                          final isCorrect = optionIdentifier == question.correctAnswer;
+                          final isCorrect = choice.isCorrect;
                           final isAnswerSelected = questionState.answerSelected;
                           final isSelected = scoreState.selectedAnswer == index;
 
                           Color backgroundColor = Colors.transparent;
                           if (isAnswerSelected) {
-                            if (isCorrect) {
-                              backgroundColor = Colors.green; // Correct answer in green
-                            } else {
-                              backgroundColor = Colors.red.withOpacity(0.7); // Incorrect answer in red
-                            }
+                            backgroundColor = isCorrect ? Colors.green : Colors.red.withOpacity(0.7);
                           }
 
                           return GestureDetector(
@@ -106,7 +78,7 @@ class ImageQuestionScreen extends StatelessWidget {
                               }
                             },
                             child: QuestionItem(
-                              imagePath: optionImage,
+                              imagePath: choice.content, // Assuming content contains image path
                               isSelected: isSelected,
                               backgroundColor: backgroundColor,
                             ),
@@ -131,7 +103,7 @@ class ImageQuestionScreen extends StatelessWidget {
                         textStyle: const TextStyle(fontSize: 18),
                       ),
                       child: Text(
-                        questionState.currentIndex < questions.length - 1 ? 'التالي' : 'إنهاء',
+                        questionState.currentIndex < questions.length - 1 ? 'Next' : 'Finish',
                       ),
                     ),
                   ),

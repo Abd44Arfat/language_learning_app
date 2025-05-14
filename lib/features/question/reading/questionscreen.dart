@@ -1,29 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:launguagelearning/core/utils/styles.dart';
+import 'package:launguagelearning/data/models/question_model.dart';
 import 'package:launguagelearning/features/home/home_screen.dart';
 import 'package:launguagelearning/features/question/cubit/tracker_cubit.dart';
 import 'package:launguagelearning/features/question/reading/question_tracker.dart';
 
 class QuestionScreen extends StatelessWidget {
-  QuestionScreen({super.key});
+  QuestionScreen({super.key, required this.questions});
   static const String routeName = '/question';
 
-  final List<Question> questions = [
-    Question(
-      imagePath: 'assets/images/image1.png',
-      questionText: 'Choose the Correct Answer?',
-      options: ['Drink', 'Eat', 'Run', 'Sleep'],
-      correctAnswer: 'Drink',
-    ),
-    Question(
-      imagePath: 'assets/images/image2.png',
-      questionText: 'Choose the Correct Answer?',
-      options: ['Apple', 'Banana', 'Orange', 'Grape'],
-      correctAnswer: 'Banana',
-    ),
-    // Add more questions as needed
-  ];
+  final List<QuestionModel> questions;
 
   @override
   Widget build(BuildContext context) {
@@ -52,24 +39,16 @@ class QuestionScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 QuestionsTracker(totalQ: questions.length),
                 const SizedBox(height: 10),
-                Image.asset(
-                  question.imagePath,
-                  height: 250,
-                  errorBuilder: (context, error, stackTrace) => const Icon(
-                    Icons.broken_image,
-                    size: 100,
-                    color: Colors.white,
-                  ),
-                ),
+                // TODO: Add image if available in question data
                 const SizedBox(height: 10),
                 Text(
-                  question.questionText,
+                  question.questionContent,
                   style: TextStyles.font30WhiteBold,
                 ),
                 const SizedBox(height: 10),
                 Expanded(
                   child: GridView.builder(
-                    itemCount: question.options.length,
+                    itemCount: question.choices.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
@@ -77,22 +56,17 @@ class QuestionScreen extends StatelessWidget {
                       childAspectRatio: 2,
                     ),
                     itemBuilder: (context, index) {
-                      final option = question.options[index];
+                      final choice = question.choices[index];
                       return BlocBuilder<ScoreTrackerCubit, ScoreTrackerState>(
                         builder: (context, scoreState) {
-                          final isCorrect = option == question.correctAnswer;
+                          final isCorrect = choice.isCorrect;
                           final isAnswerSelected = questionState.answerSelected;
                           final isSelected = scoreState.selectedAnswer == index;
 
-                   Color backgroundColor = Colors.transparent;
-if (isAnswerSelected) {
-  if (isCorrect) {
-    backgroundColor = Colors.green;// الإجابة الصحيحة باللون الأخضر
-  } else {
-    backgroundColor = Colors.red.withOpacity(0.7);    // الإجابة الخاطئة باللون الأحمر
-  }
-}
-
+                          Color backgroundColor = Colors.transparent;
+                          if (isAnswerSelected) {
+                            backgroundColor = isCorrect ? Colors.green : Colors.red.withOpacity(0.7);
+                          }
 
                           return GestureDetector(
                             onTap: () {
@@ -106,7 +80,7 @@ if (isAnswerSelected) {
                               }
                             },
                             child: QuestionItem(
-                              title: option,
+                              title: choice.content,
                               isSelected: isSelected,
                               backgroundColor: backgroundColor,
                             ),
@@ -131,7 +105,7 @@ if (isAnswerSelected) {
                         textStyle: const TextStyle(fontSize: 18),
                       ),
                       child: Text(
-                        questionState.currentIndex < questions.length - 1 ? 'التالي' : 'إنهاء',
+                        questionState.currentIndex < questions.length - 1 ? 'Next' : 'Finish',
                       ),
                     ),
                   ),
