@@ -1,62 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:launguagelearning/core/utils/styles.dart';
+import 'package:launguagelearning/data/models/levels_model.dart';
+import 'package:launguagelearning/features/levels/manager/cubit/levels_cubit.dart';
+import 'package:launguagelearning/features/sections/sections_Screen.dart';
 
 class LevelsScreen extends StatelessWidget {
   const LevelsScreen({super.key});
   static const String routeName = '/levelsScreen';
 
-  // Static level data
-  final List<Map<String, dynamic>> levelData = const [
-    {
-      'title': 'VOCABULARY',
-      'icon': Icons.school,
-      'background': Colors.green,
-    },
-    {
-      'title': 'LISTENING',
-      'icon': Icons.star,
-     'background': Colors.blue,
-    },
-    {
-      'title': 'READING',
-      'icon': Icons.star,
-      'background': Colors.orange,
-    },
-    {
-      'title': 'MEMORY',
-      'icon': Icons.military_tech,
-      'background': Colors.red,
-    },
-  
-  ];
-
   @override
   Widget build(BuildContext context) {
+    // Trigger fetch when screen builds
+    context.read<LevelsCubit>().fetchLevels();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Levels'),
       ),
-      body: Column(
-        children: [
-         
-            
+      body: BlocBuilder<LevelsCubit, LevelsState>(
+        builder: (context, state) {
+          if (state is LevelsLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is LevelsFailure) {
+            return Center(child: Text(state.message));
+          } else if (state is LevelsSuccess) {
+            final levels = state.levels;
 
-          Expanded(
-            child: ListView.builder(
-              itemCount: levelData.length,
+            return ListView.builder(
+              itemCount: levels.length,
               itemBuilder: (context, index) {
-                final level = levelData[index];
-                return LevelItem(
-                  title: level['title'],
-                  icon: level['icon'],
-                  background: level['background'],
+                final level = levels[index];
+                return GestureDetector(
+                  onTap: (){
+ Navigator.pushNamed(
+      context,
+      SectionsScreen.routeName,
+      arguments: level.id, // Pass levelId
+    );
+
+
+                  },
+                  child: LevelItem(
+                    title: level.name,
+                    icon: Icons.school,
+                    background: _getColorForIndex(index),
+                  ),
                 );
               },
-            ),
-          ),
-        ],
+            );
+          } else {
+            return const Center(child: Text('Please wait...'));
+          }
+        },
       ),
     );
+  }
+
+  Color _getColorForIndex(int index) {
+    final colors = [Colors.green, Colors.blue, Colors.orange, Colors.red];
+    return colors[index % colors.length];
   }
 }
 

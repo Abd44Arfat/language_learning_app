@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:launguagelearning/core/utils/styles.dart';
+import 'package:launguagelearning/features/question/audioQuestion/audio_Question.dart';
+import 'package:launguagelearning/features/question/manager/cubit/question_cubit.dart';
+import 'package:launguagelearning/features/sections/manager/cubit/sections_cubit.dart';
 
 class Homescreen extends StatelessWidget {
-  const Homescreen({super.key});
+  const Homescreen({super.key, required this.sectionName, required this.sectionImage, required this.sectionId});
   static const String routeName = '/homescreen';
+final String sectionName;
+  final String sectionImage;
+    final int sectionId;
 
   // Static level data
   final List<Map<String, dynamic>> levelData = const [
@@ -32,16 +39,23 @@ class Homescreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     context.read<QuestionLangugeCubit>().fetchquestionsBySectionId(sectionId);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Levels'),
       ),
       body: Column(
         children: [
-          Image.asset('assets/images/image 83.png'),
+        Image.network(
+          sectionImage,
+          height: 200,
+          width: 200,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+        ),
           const SizedBox(height: 20),
           Text(
-            'ALPHABET',
+        sectionName,
             style: TextStyles.font16Blackbold,
           ),
                     const SizedBox(height: 20),
@@ -51,10 +65,13 @@ class Homescreen extends StatelessWidget {
               itemCount: levelData.length,
               itemBuilder: (context, index) {
                 final level = levelData[index];
-                return LevelItem(
-                  title: level['title'],
-                  icon: level['icon'],
-                  background: level['background'],
+                return GestureDetector(
+
+                  child: LevelItem(
+                    title: level['title'],
+                    icon: level['icon'],
+                    background: level['background'],
+                  ),
                 );
               },
             ),

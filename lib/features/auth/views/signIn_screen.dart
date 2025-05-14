@@ -4,6 +4,7 @@ import 'package:launguagelearning/core/helper-function/gei_it_service.dart';
 import 'package:launguagelearning/features/auth/manager/cubit/auth_cubit.dart';
 import 'package:launguagelearning/features/auth/views/signup_screen.dart';
 import 'package:launguagelearning/features/home/home_screen.dart';
+import 'package:launguagelearning/features/levels/levels_screen.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -26,8 +27,9 @@ class _SignInState extends State<SignIn> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoading) {
+            Center(child: CircularProgressIndicator());  
         } else if (state is AuthSuccess) {
-          Navigator.pushReplacementNamed(context, Homescreen.routeName);
+          Navigator.pushReplacementNamed(context, LevelsScreen.routeName);
         } else if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
@@ -49,7 +51,47 @@ class _SignInState extends State<SignIn> {
                 child: Stack(
                   children: [
                     // Yellow and Blue Circles...
-            
+                    Positioned(
+                left: 235,
+                top: -16,
+                child: Container(
+                  width: 398,
+                  height: 398,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFFE4DB7C),
+                    shape: OvalBorder(),
+                  ),
+                ),
+              ),
+
+              // Blue Circle
+              Positioned(
+                left: -184,
+                top: -412,
+                child: Container(
+                  width: 700,
+                  height: 700,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFF221C6B),
+                    shape: OvalBorder(),
+                  ),
+                ),
+              ),
+
+              // Welcome Back Text
+              Positioned(
+                left: 36,
+                top: 132,
+                child: Text(
+                  'Welcome\nBack',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 46,
+                    fontFamily: 'Futura Hv BT',
+                    height: 1.2,
+                  ),
+                ),
+              ),
                     Positioned(
                       left: 36,
                       top: 132,
