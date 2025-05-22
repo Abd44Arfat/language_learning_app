@@ -21,7 +21,7 @@ class ImageQuestionScreen extends StatelessWidget {
       ],
       child: Scaffold(
         backgroundColor: Colors.blueAccent,
-        appBar: AppBar(title: const Text('Question')),
+        appBar: AppBar(title: const Text('Memory Question')),
         body: BlocBuilder<QuestionCubit, QuestionState>(
           builder: (context, questionState) {
             if (questionState.currentIndex >= questions.length) {
@@ -38,12 +38,32 @@ class ImageQuestionScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 10),
                 QuestionsTracker(totalQ: questions.length),
-                const SizedBox(height: 10),
-                Text(
-                  question.questionContent,
-                  style: TextStyles.font30WhiteBold,
+                const SizedBox(height: 20),
+                // Display the question image
+                Container(
+                  height: 200,
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      question.questionContent, // Assuming questionContent contains the image URL
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => const Center(
+                        child: Icon(
+                          Icons.broken_image,
+                          size: 50,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 Expanded(
                   child: GridView.builder(
                     itemCount: question.choices.length,
@@ -51,7 +71,7 @@ class ImageQuestionScreen extends StatelessWidget {
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
-                      childAspectRatio: 1,
+                      childAspectRatio: 2,
                     ),
                     itemBuilder: (context, index) {
                       final choice = question.choices[index];
@@ -78,7 +98,7 @@ class ImageQuestionScreen extends StatelessWidget {
                               }
                             },
                             child: QuestionItem(
-                              imagePath: choice.content, // Assuming content contains image path
+                              text: choice.content,
                               isSelected: isSelected,
                               backgroundColor: backgroundColor,
                             ),
@@ -143,12 +163,12 @@ class QuizCompletedDialog extends StatelessWidget {
 class QuestionItem extends StatelessWidget {
   const QuestionItem({
     super.key,
-    required this.imagePath,
+    required this.text,
     required this.isSelected,
     required this.backgroundColor,
   });
 
-  final String imagePath;
+  final String text;
   final bool isSelected;
   final Color backgroundColor;
 
@@ -163,14 +183,10 @@ class QuestionItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
-          child: Image.asset(
-            imagePath,
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) => const Icon(
-              Icons.broken_image,
-              size: 50,
-              color: Colors.white,
-            ),
+          child: Text(
+            text,
+            style: TextStyles.font30WhiteBold,
+            textAlign: TextAlign.center,
           ),
         ),
       ),
