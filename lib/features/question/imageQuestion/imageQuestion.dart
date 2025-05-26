@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:launguagelearning/core/utils/constants.dart';
 import 'package:launguagelearning/core/utils/styles.dart';
 import 'package:launguagelearning/data/models/question_model.dart';
 import 'package:launguagelearning/features/home/home_screen.dart';
@@ -51,7 +52,7 @@ class ImageQuestionScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(
-                      question.questionContent, // Assuming questionContent contains the image URL
+                     'http://127.0.0.1:5000/'+ question.questionContent, // Assuming questionContent contains the image URL
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => const Center(
                         child: Icon(

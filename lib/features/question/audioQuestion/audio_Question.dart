@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:launguagelearning/core/utils/constants.dart';
 import 'package:launguagelearning/core/utils/styles.dart';
 import 'package:launguagelearning/data/models/question_model.dart';
 import 'package:launguagelearning/features/home/home_screen.dart';
@@ -61,7 +62,7 @@ class _AudioQuestionScreenState extends State<AudioQuestionScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     // TODO: Implement audio playback based on question data
-                    // await audioPlayer.play(AssetSource(question.audioPath));
+await audioPlayer.play(UrlSource('http://127.0.0.1:5000/' + question.questionContent));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:launguagelearning/core/utils/constants.dart';
 import 'package:launguagelearning/core/utils/styles.dart';
 import 'package:launguagelearning/data/models/question_model.dart';
 import 'package:launguagelearning/features/home/home_screen.dart';
@@ -141,7 +142,6 @@ class QuizCompletedDialog extends StatelessWidget {
     );
   }
 }
-
 class QuestionItem extends StatelessWidget {
   const QuestionItem({
     super.key,
@@ -156,30 +156,52 @@ class QuestionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          border: Border.all(color: Colors.white, width: 2),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 20,
-              color: isSelected ? Colors.white : Colors.white70,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            border: Border.all(color: Colors.white, width: 2),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              'http://127.0.0.1:5000/$title',
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+              errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
             ),
-            textAlign: TextAlign.center,
           ),
         ),
-      ),
+
+        // ✅ Overlay for selection effect
+        if (backgroundColor != Colors.transparent)
+          Container(
+            decoration: BoxDecoration(
+              color: backgroundColor.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+
+        // ✅ Show the icon (correct or wrong)
+        if (backgroundColor != Colors.transparent)
+          Positioned(
+            top: 8,
+            right: 8,
+            child: Icon(
+              backgroundColor == Colors.green ? Icons.check_circle : Icons.cancel,
+              color: backgroundColor == Colors.green ? Colors.greenAccent : Colors.redAccent,
+              size: 32,
+            ),
+          ),
+      ],
     );
   }
 }
+
+
 
 // Model
 class Question {
