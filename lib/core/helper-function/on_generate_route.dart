@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:launguagelearning/core/helper-function/gei_it_service.dart';
+import 'package:launguagelearning/features/auth/manager/cubit/auth_cubit.dart';
 import 'package:launguagelearning/features/auth/views/signIn_screen.dart';
 import 'package:launguagelearning/features/auth/views/signup_screen.dart';
 import 'package:launguagelearning/features/auth/views/splash_screen.dart';
+import 'package:launguagelearning/features/auth/views/splash_screen2.dart';
 import 'package:launguagelearning/features/home/home_screen.dart';
 import 'package:launguagelearning/features/levels/levels_screen.dart';
 import 'package:launguagelearning/features/levels/manager/cubit/levels_cubit.dart';
@@ -23,8 +25,17 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case SignIn.routeName:
       return MaterialPageRoute(builder: (context) => SignIn());
 
+    case SplashScreen2.routeName:
+      return MaterialPageRoute(builder: (context) => SplashScreen2());
+
     case Signup.routeName:
-      return MaterialPageRoute(builder: (context) => Signup());
+      return MaterialPageRoute(
+        builder:
+            (context) => BlocProvider(
+              create: (context) => AuthCubit(getIt()),
+              child: Signup(),
+            ),
+      );
     case Homescreen.routeName:
       final args = settings.arguments as Map<String, dynamic>;
       return MaterialPageRoute(
@@ -34,7 +45,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
               child: Homescreen(
                 sectionName: args['sectionName'],
                 sectionImage: args['sectionImage'],
-                 sectionId: args['section_id'],
+                sectionId: args['section_id'],
               ),
             ),
       );

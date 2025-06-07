@@ -39,6 +39,8 @@ dependencies:
   
   flutter_screenutil: ^5.9.0
   shared_preferences: ^2.3.2
+  speech_to_text: 
+  http: ^1.4.0
   logger: ^2.5.0
   dartz: ^0.10.1
   dio: ^5.8.0+1
@@ -46,7 +48,7 @@ dependencies:
   flutter_bloc: ^9.1.0
   bloc: ^9.0.0
   percent_indicator: ^4.2.3
-  audioplayers: ^5.2.1
+  audioplayers: 
   
 
 

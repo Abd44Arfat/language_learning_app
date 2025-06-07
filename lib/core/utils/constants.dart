@@ -8,6 +8,7 @@ class ApiUrls {
 
 
   static const login = "$baseURL/api/auth/login";
+  static const register = "$baseURL/api/auth/register";
   static const getAllLevels = "$baseURL/api/level";
   static const sectionById = "$baseURL/api/section";
   static const allQuestion = "$baseURL/api/question";

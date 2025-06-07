@@ -17,3 +17,19 @@ final String message;
   AuthFailure({required this.message});
 
 }
+
+
+final class AuthRegisterLoading extends AuthState {}
+final class AuthRegisterSuccess extends AuthState {
+  final String message;
+
+  AuthRegisterSuccess({required this.message});
+}
+final class AuthRegisterFailure extends AuthState {
+
+final String message;
+
+  AuthRegisterFailure({required this.message});
+
+}
+

@@ -21,4 +21,16 @@ class AuthCubit extends Cubit<AuthState> {
       ( loginResponse) => emit(AuthSuccess( message: 'Login Success')),
     );
   }
+
+  Future<void> parentRegister({required String email, required String password,required String role,required String name}) async {
+    emit(AuthRegisterLoading());
+
+    final result = await authRepository.userregister(email, password,role,name);
+
+    result.fold(
+      (Failure failure) => emit(AuthRegisterFailure(message: '${failure.message}')),
+      ( loginResponse) => emit(AuthRegisterSuccess( message: 'Login Success')),
+    );
+  }
+
 }

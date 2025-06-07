@@ -6,6 +6,7 @@ import 'package:launguagelearning/features/auth/manager/cubit/auth_cubit.dart';
 import 'package:launguagelearning/features/auth/views/signIn_screen.dart';
 import 'package:launguagelearning/features/auth/views/signup_screen.dart';
 import 'package:launguagelearning/features/auth/views/splash_screen.dart';
+import 'package:launguagelearning/features/auth/views/splash_screen2.dart';
 import 'package:launguagelearning/features/question/audioQuestion/audio_Question.dart';
 import 'package:launguagelearning/features/question/imageQuestion/imageQuestion.dart';
 import 'package:launguagelearning/features/question/reading/questionscreen.dart';
@@ -25,7 +26,9 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthCubit(getIt()),
       child: MaterialApp(
-        initialRoute: SignIn.routeName,
+        // SplashScreen
+        // initialRoute: SplashScreen.routeName,
+         initialRoute: SplashScreen2.routeName,
         onGenerateRoute: onGenerateRoute,
       ),
     );

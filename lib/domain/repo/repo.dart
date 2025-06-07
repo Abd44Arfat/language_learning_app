@@ -37,6 +37,37 @@ class Repository {
   }
 }
 
+Future<Either<Failure, RegisterResponse>> userregister(
+  String name,
+  String email,
+  String password,
+  String role,
+
+) async {
+  try {
+    final response = await api.post(
+      ApiUrls.register,
+      data: {'email': email, 'password': password,'role':'ADMIN','username':name},
+    );
+
+    final loginResponse = RegisterResponse.fromJson(response.data);
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('access_token', loginResponse.accessToken);
+
+    return Right(loginResponse);
+  } on DioException catch (e) {
+    return Left(Failure(e.toString()));
+  } catch (e) {
+    return Left(Failure(e.toString()));
+  }
+}
+
+
+
+
+
+
   Future<Either<Failure, List<Level>>> allLevels() async {
   try {
     final prefs = await SharedPreferences.getInstance();
