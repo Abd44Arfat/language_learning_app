@@ -39,6 +39,7 @@ dependencies:
   
   flutter_screenutil: ^5.9.0
   shared_preferences: ^2.3.2
+  permission_handler: ^11.3.1
   speech_to_text: 
   http: ^1.4.0
   logger: ^2.5.0

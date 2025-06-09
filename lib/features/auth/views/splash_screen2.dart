@@ -1,16 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:launguagelearning/features/auth/views/signIn_screen.dart';
+import 'package:launguagelearning/features/levels/levels_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreen2 extends StatelessWidget {
+class SplashScreen2 extends StatefulWidget {
   const SplashScreen2({super.key});
   static const String routeName = '/splash2';
+
+  @override
+  State<SplashScreen2> createState() => _SplashScreen2State();
+}
+
+class _SplashScreen2State extends State<SplashScreen2> {
+  @override
+  void initState() {
+    super.initState();
+    _checkTokenAndNavigate();
+  }
+
+  Future<void> _checkTokenAndNavigate() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('access_token');
+    
+    if (mounted) {
+      if (token != null && token.isNotEmpty) {
+        // Token exists, navigate to levels screen
+        Navigator.pushReplacementNamed(context, LevelsScreen.routeName);
+      } else {
+        // No token, navigate to sign in
+        Navigator.pushReplacementNamed(context, SignIn.routeName);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // الخلفية (الصورة)
           SizedBox.expand(
             child: Image.asset(
               'assets/images/splash.jpg',
@@ -18,7 +45,6 @@ class SplashScreen2 extends StatelessWidget {
             ),
           ),
 
-          // الطبقة العلوية من المحتوى
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -27,11 +53,9 @@ class SplashScreen2 extends StatelessWidget {
                 children: [
                   const SizedBox(height: 24),
 
-                  // لوجو + اسم التطبيق
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                     
                       const SizedBox(width: 8),
                       const Text(
                         'LinguaZone',
@@ -46,7 +70,6 @@ class SplashScreen2 extends StatelessWidget {
 
                   const Spacer(),
 
-                  // النص "learn Languages"
                   const Text.rich(
                     TextSpan(
                       children: [
@@ -73,50 +96,11 @@ class SplashScreen2 extends StatelessWidget {
 
                   const SizedBox(height: 32),
 
-                  // زر "Get Started"
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                      Navigator.pushNamed(context, SignIn.routeName); 
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        'Get Started',
-                        style: TextStyle(fontSize: 16,color: Colors.white),
-                      ),
+                  // Loading indicator while checking token
+                  const Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // "Have an account? Log In"
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Have an account? ',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // الانتقال إلى صفحة تسجيل الدخول
-                        },
-                        child: const Text(
-                          'Log In',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
 
                   const SizedBox(height: 24),

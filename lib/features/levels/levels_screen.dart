@@ -9,9 +9,8 @@ import 'package:launguagelearning/core/utils/styles.dart';
 import 'package:launguagelearning/data/models/levels_model.dart';
 import 'package:launguagelearning/features/levels/manager/cubit/levels_cubit.dart';
 import 'package:launguagelearning/features/sections/sections_Screen.dart';
+import 'package:launguagelearning/features/settings/settings_screen.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-
-
 class LevelsScreen extends StatefulWidget {
   const LevelsScreen({super.key});
   static const String routeName = '/levelsScreen';
@@ -27,7 +26,7 @@ class _LevelsScreenState extends State<LevelsScreen> {
   final List<Widget> _screens = [
     const LevelsBody(),     // Home
 AIScreen ()  ,
-SettingsScreen()
+UserSettingsScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -217,7 +216,7 @@ class LevelItem extends StatelessWidget {
 }
 class AIScreen extends StatefulWidget {
   const AIScreen({super.key});
-  static const String routeName = '/levelsScreen';
+  static const String routeName = '/AIScreen';
 
   @override
   State<AIScreen> createState() => _AIScreenState();
@@ -229,16 +228,44 @@ class _AIScreenState extends State<AIScreen> {
   String _originalText = '';
   String _correctedText = '';
 
-  Future<void> startListening() async {
-    bool available = await _speech.initialize();
-    if (available) {
-      setState(() => _isListening = true);
-      _speech.listen(
-        onResult: (result) {
-          setState(() => _originalText = result.recognizedWords);
-          print("🎙️ Original: $_originalText");
-        },
+  @override
+  void initState() {
+    super.initState();
+    _initSpeech();
+  }
+
+  Future<void> _initSpeech() async {
+    await _speech.initialize(
+      onStatus: _onSpeechStatus,
+      onError: (error) => print("❌ Speech error: $error"),
+    );
+  }
+
+  void _onSpeechStatus(String status) {
+    print("🔄 Status: $status");
+    if (status == 'done' || status == 'notListening') {
+      setState(() => _isListening = false);
+    }
+  }
+
+  Future<void> toggleListening() async {
+    if (_isListening) {
+      await _speech.stop();
+      setState(() => _isListening = false);
+    } else {
+      bool available = await _speech.initialize(
+        onStatus: _onSpeechStatus,
+        onError: (error) => print("❌ Speech error: $error"),
       );
+      if (available) {
+        setState(() => _isListening = true);
+        _speech.listen(
+          onResult: (result) {
+            setState(() => _originalText = result.recognizedWords);
+            print("🎙️ Original: $_originalText");
+          },
+        );
+      }
     }
   }
 
@@ -279,7 +306,6 @@ class _AIScreenState extends State<AIScreen> {
     });
   }
 
-  /// 🧪 زر للتجربة بدون تسجيل صوت
   void testSample() {
     const sampleText = "I has a apple and she go to school yesterday.";
     setState(() => _originalText = sampleText);
@@ -288,61 +314,79 @@ class _AIScreenState extends State<AIScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 20),
-        Icon(Icons.mic, size: 80, color: _isListening ? Colors.red : Colors.blue),
-        const SizedBox(height: 20),
-        const Text("Your Text:", style: TextStyle(fontWeight: FontWeight.bold)),
-        Container(
-          margin: const EdgeInsets.all(8),
-          padding: const EdgeInsets.all(12),
-          height: 100,
-          width: double.infinity,
-          color: Colors.blue.shade50,
-          child: SingleChildScrollView(child: Text(_originalText)),
-        ),
-        const Text("Corrected Text:", style: TextStyle(fontWeight: FontWeight.bold)),
-        Container(
-          margin: const EdgeInsets.all(8),
-          padding: const EdgeInsets.all(12),
-          height: 100,
-          width: double.infinity,
-          color: Colors.green.shade50,
-          child: SingleChildScrollView(child: Text(_correctedText)),
-        ),
-        const Spacer(),
-        Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 10,
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
           children: [
-            ElevatedButton(
-              onPressed: () async {
-                if (_originalText.isNotEmpty) {
-                  await correctGrammar(_originalText);
-                }
-              },
-              child: const Text("Correct it"),
+            const SizedBox(height: 20),
+            Icon(Icons.mic, size: 80, color: _isListening ? Colors.red : Colors.blue),
+            const SizedBox(height: 10),
+            Text(
+              _isListening ? "Listening..." : "Tap the mic to speak",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: _isListening ? Colors.red : Colors.black,
+              ),
             ),
-            ElevatedButton(
-              onPressed: startListening,
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue.shade100),
-              child: const Text("🎙️ Record again", style: TextStyle(color: Colors.blue)),
+            const SizedBox(height: 20),
+            const Text("Your Text:", style: TextStyle(fontWeight: FontWeight.bold)),
+            Container(
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(12),
+              height: 100,
+              width: double.infinity,
+              color: Colors.blue.shade50,
+              child: SingleChildScrollView(child: Text(_originalText)),
             ),
-            ElevatedButton(
-              onPressed: reset,
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade100),
-              child: const Text("Reset", style: TextStyle(color: Colors.red)),
+            const Text("Corrected Text:", style: TextStyle(fontWeight: FontWeight.bold)),
+            Container(
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(12),
+              height: 100,
+              width: double.infinity,
+              color: Colors.green.shade50,
+              child: SingleChildScrollView(child: Text(_correctedText)),
             ),
-            ElevatedButton(
-              onPressed: testSample,
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.amber.shade100),
-              child: const Text("🧪 Test Sample", style: TextStyle(color: Colors.black)),
+            const Spacer(),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 10,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_originalText.isNotEmpty) {
+                      await correctGrammar(_originalText);
+                    }
+                  },
+                  child: const Text("Correct it"),
+                ),
+                ElevatedButton(
+                  onPressed: toggleListening,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _isListening ? Colors.red.shade100 : Colors.blue.shade100,
+                  ),
+                  child: Text(
+                    _isListening ? "🛑 Stop" : "🎙️ Start",
+                    style: TextStyle(color: _isListening ? Colors.red : Colors.blue),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: reset,
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey.shade200),
+                  child: const Text("Reset", style: TextStyle(color: Colors.black)),
+                ),
+                ElevatedButton(
+                  onPressed: testSample,
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.amber.shade100),
+                  child: const Text("🧪 Test Sample", style: TextStyle(color: Colors.black)),
+                ),
+              ],
             ),
+            const SizedBox(height: 30),
           ],
         ),
-        const SizedBox(height: 30),
-      ],
+      ),
     );
   }
 }

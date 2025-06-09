@@ -47,7 +47,7 @@ Navigator.pushNamed(
           'section_id':section.id,
           'sectionName': section.name,
           'sectionImage': section.image?.isNotEmpty ?? false
-              ? ApiUrls.imageBaseURL + section.image!
+              ? section.image!
               : 'https://your_default_image_url',
               
         },
@@ -63,7 +63,7 @@ Navigator.pushNamed(
                           borderRadius: BorderRadius.circular(12.0),
                           child: Image.network(
                             section.image?.isNotEmpty ?? false
-                                ? ApiUrls.imageBaseURL + section.image!
+                                ? section.image!
                                 : 'https://your_default_image_url', // Replace with a default image URL or placeholder
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) =>

@@ -27,10 +27,17 @@ class _SignInState extends State<SignIn> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoading) {
-            Center(child: CircularProgressIndicator());  
-        } else if (state is AuthSuccess) {
-          Navigator.pushReplacementNamed(context, LevelsScreen.routeName);
-        } else if (state is AuthFailure) {
+         CircularProgressIndicator();
+      
+        }
+      else if (state is AuthSuccess) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(state.message)),
+  );
+  Navigator.pushNamed(context, LevelsScreen.routeName);
+
+}
+ else if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );

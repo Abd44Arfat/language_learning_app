@@ -6,6 +6,7 @@ import 'package:launguagelearning/features/question/imageQuestion/imageQuestion.
 import 'package:launguagelearning/features/question/manager/cubit/question_cubit.dart';
 import 'package:launguagelearning/features/question/reading/questionscreen.dart' as reading;
 import 'package:launguagelearning/features/sections/manager/cubit/sections_cubit.dart';
+import 'package:launguagelearning/features/vocabulary/vacbulary_screen.dart';
 
 class Homescreen extends StatelessWidget {
   const Homescreen({super.key, required this.sectionName, required this.sectionImage, required this.sectionId});
@@ -43,7 +44,9 @@ class Homescreen extends StatelessWidget {
     context.read<QuestionLangugeCubit>().fetchquestionsBySectionId(sectionId);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Levels'),
+        title: Text(sectionName),
+        backgroundColor: Colors.amber,
+        foregroundColor: Colors.white,
       ),
       body: Column(
         children: [
@@ -76,7 +79,16 @@ class Homescreen extends StatelessWidget {
                       final level = levelData[index];
                       return GestureDetector(
                         onTap: () {
-                          if (level['title'] == 'VOCABULARY') return;
+                          if (level['title'] == 'VOCABULARY') {
+                            Navigator.pushNamed(
+                              context,
+                              VocabularyScreen.routeName,
+                              arguments: {
+                                'sectionName': sectionName,
+                              },
+                            );
+                            return;
+                          }
                           
                           final questions = state.questions.where((q) {
                             switch (level['title']) {

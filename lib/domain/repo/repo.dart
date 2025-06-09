@@ -38,16 +38,20 @@ class Repository {
 }
 
 Future<Either<Failure, RegisterResponse>> userregister(
-  String name,
   String email,
   String password,
   String role,
-
+  String username,
 ) async {
   try {
     final response = await api.post(
       ApiUrls.register,
-      data: {'email': email, 'password': password,'role':'ADMIN','username':name},
+      data: {
+        'email': email,
+        'password': password,
+        'role': role,
+        'username': username
+      },
     );
 
     final loginResponse = RegisterResponse.fromJson(response.data);

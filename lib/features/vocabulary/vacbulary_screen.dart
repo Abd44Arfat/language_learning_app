@@ -1,93 +1,115 @@
 import 'package:flutter/material.dart';
+import 'package:launguagelearning/core/utils/styles.dart';
 
 class VocabularyScreen extends StatelessWidget {
-   VocabularyScreen({super.key});
-  static const String routeName = '/vocab';
+  const VocabularyScreen({super.key, required this.sectionName});
+  static const String routeName = '/vocabulary';
 
-  // Sample data for vocabulary categories
-  final List<Map<String, String>> vocabCategories = [
-    {'title': 'Animals', 'image': 'assets/images/animals.jpg'},
-    {'title': 'Food', 'image': 'assets/images/food.jpg'},
-    {'title': 'Travel', 'image': 'assets/images/travel.jpg'},
-    {'title': 'Sports', 'image': 'assets/images/sports.jpg'},
-    {'title': 'Nature', 'image': 'assets/images/nature.jpg'},
-    {'title': 'Technology', 'image': 'assets/images/technology.jpg'},
-  ];
+  final String sectionName;
 
-  // List of background colors for containers
-  final List<Color> backgroundColors = [
-    Colors.blue.shade100,
-    Colors.green.shade100,
-    Colors.purple.shade100,
-    Colors.orange.shade100,
-    Colors.red.shade100,
-    Colors.teal.shade100,
+  // Static vocabulary data
+  final List<Map<String, dynamic>> vocabularyItems = const [
+    {
+      'word': 'Hello',
+      'translation': 'مرحبا',
+      'image': 'assets/images/Duck.jpg',
+      'color': Color(0xFFFFB6C1), // Light pink
+    },
+    {
+      'word': 'Goodbye',
+      'translation': 'مع السلامة',
+      'image': 'assets/images/Duck.jpg',
+      'color': Color(0xFF98FB98), // Pale green
+    },
+    {
+      'word': 'Thank you',
+      'translation': 'شكرا',
+      'image': 'assets/images/Duck.jpg',
+      'color': Color(0xFFFFD700), // Gold
+    },
+    {
+      'word': 'Please',
+      'translation': 'من فضلك',
+      'image': 'assets/images/Duck.jpg',
+      'color': Color(0xFF87CEEB), // Sky blue
+    },
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vocabulary'),
+        title: Text(sectionName),
+        backgroundColor: Colors.amber,
+        foregroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // 2 items per row
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
-            childAspectRatio: 0.75, // Adjust for image and text
-          ),
-          itemCount: vocabCategories.length,
-          itemBuilder: (context, index) {
-            final category = vocabCategories[index];
-            // Cycle through colors using modulo
-            final bgColor = backgroundColors[index % backgroundColors.length];
-            return Column(
+      body: GridView.builder(
+        padding: const EdgeInsets.all(16),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 0.8,
+        ),
+        itemCount: vocabularyItems.length,
+        itemBuilder: (context, index) {
+          final item = vocabularyItems[index];
+          return Container(
+            height: 300,
+            decoration: BoxDecoration(
+              color: item['color'],
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: bgColor, // Apply background color
-                      borderRadius: BorderRadius.circular(12.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12.0),
-                      child: Image.asset(
-                        // category['image']!, // Reverted to use category image
-                        'assets/images/image 83.png',
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Container(
-                          color: Colors.grey[300],
-                          child: const Icon(Icons.image_not_supported, size: 50),
-                        ),
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ClipOval(
+                    child: Image.asset(
+                      item['image'],
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => const Icon(
+                        Icons.image,
+                        size: 50,
+                        color: Colors.grey,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 8.0),
+                const SizedBox(height: 16),
                 Text(
-                  category['title']!,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
+                  item['word'],
+                  style: TextStyles.font16Blackbold,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  item['translation'],
+                  style: TextStyles.font15BlackMedium,
                 ),
               ],
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

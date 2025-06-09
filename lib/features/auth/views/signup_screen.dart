@@ -12,17 +12,17 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  final nameController = TextEditingController();
+  final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   void _register(BuildContext context) {
     final cubit = context.read<AuthCubit>();
     cubit.parentRegister(
-      name: nameController.text,
+      username: usernameController.text,
       email: emailController.text,
       password: passwordController.text,
-      role: 'ADMIN', // or 'parent' or 'son' depending on your flow
+      role: 'ADMIN',
     );
   }
 
@@ -107,9 +107,9 @@ class _SignupState extends State<Signup> {
                   top: 300,
                   right: 36,
                   child: TextField(
-                    controller: nameController,
+                    controller: usernameController,
                     decoration: InputDecoration(
-                      hintText: 'Your Name',
+                      hintText: 'Username',
                       filled: true,
                       fillColor: Colors.grey.shade200,
                       border: OutlineInputBorder(

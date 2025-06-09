@@ -42,7 +42,7 @@ class ImageQuestionScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 // Display the question image
                 Container(
-                  height: 200,
+                  height: 300,
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
@@ -52,7 +52,7 @@ class ImageQuestionScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(
-                     'http://127.0.0.1:5000/'+ question.questionContent, // Assuming questionContent contains the image URL
+                      question.questionContent, // Assuming questionContent contains the image URL
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => const Center(
                         child: Icon(

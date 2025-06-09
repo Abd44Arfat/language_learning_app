@@ -54,7 +54,7 @@ class QuestionScreen extends StatelessWidget {
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
-                      childAspectRatio: 2,
+                      childAspectRatio: 0.8,
                     ),
                     itemBuilder: (context, index) {
                       final choice = question.choices[index];
@@ -159,6 +159,7 @@ class QuestionItem extends StatelessWidget {
     return Stack(
       children: [
         Container(
+          height: 300,
           decoration: BoxDecoration(
             color: backgroundColor,
             border: Border.all(color: Colors.white, width: 2),
@@ -167,7 +168,7 @@ class QuestionItem extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-              'http://127.0.0.1:5000/$title',
+              title,
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:launguagelearning/core/helper-function/interceptor.dart';
-
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DioClient {
   late final Dio _dio;
@@ -34,19 +33,18 @@ class DioClient {
 
   // Method to set the token from Shared Preferences
   Future<void> addDioHeaders() async {
-    // final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
-    // if (token.isNotEmpty) {
-    //   _dio.options.headers['token'] =
-    //       token; // Use 'Authorization' for bearer token
-    // } else {
-    //   _dio.options.headers.remove('Authorization'); // Remove if no token
-    // }
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('access_token');
+    if (token != null && token.isNotEmpty) {
+      _dio.options.headers['Authorization'] = 'Bearer $token';
+    } else {
+      _dio.options.headers.remove('Authorization');
+    }
   }
 
   // Instance method to set token into headers after login
   void setTokenIntoHeaderAfterLogin(String token) {
-    _dio.options.headers['token'] = token; // Update the token
-    addDioHeaders();
+    _dio.options.headers['Authorization'] = 'Bearer $token';
   }
 
   // GET METHOD
@@ -58,6 +56,7 @@ class DioClient {
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
+      await addDioHeaders(); // Refresh headers before each request
       final Response response = await _dio.get(
         url,
         queryParameters: queryParameters,
@@ -74,22 +73,26 @@ class DioClient {
   // POST METHOD
   Future<Response> post(
     String url, {
-    data,
+    dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
+    CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
+      await addDioHeaders(); // Refresh headers before each request
       final Response response = await _dio.post(
         url,
         data: data,
+        queryParameters: queryParameters,
         options: options,
+        cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
       return response;
-    } catch (e) {
+    } on DioException {
       rethrow;
     }
   }

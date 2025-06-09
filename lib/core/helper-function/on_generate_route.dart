@@ -15,6 +15,7 @@ import 'package:launguagelearning/features/question/manager/cubit/question_cubit
 import 'package:launguagelearning/features/question/reading/questionscreen.dart';
 import 'package:launguagelearning/features/sections/manager/cubit/sections_cubit.dart';
 import 'package:launguagelearning/features/sections/sections_Screen.dart';
+import 'package:launguagelearning/features/settings/settings_screen.dart';
 import 'package:launguagelearning/features/vocabulary/vacbulary_screen.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -30,24 +31,26 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
 
     case Signup.routeName:
       return MaterialPageRoute(
-        builder:
-            (context) => BlocProvider(
-              create: (context) => AuthCubit(getIt()),
-              child: Signup(),
-            ),
+        builder: (context) => BlocProvider(
+          create: (context) => AuthCubit(getIt()),
+          child: Signup(),
+        ),
       );
+
+    case UserSettingsScreen.routeName:
+      return MaterialPageRoute(builder: (context) => const UserSettingsScreen());
+
     case Homescreen.routeName:
       final args = settings.arguments as Map<String, dynamic>;
       return MaterialPageRoute(
-        builder:
-            (_) => BlocProvider(
-              create: (context) => QuestionLangugeCubit(getIt()),
-              child: Homescreen(
-                sectionName: args['sectionName'],
-                sectionImage: args['sectionImage'],
-                sectionId: args['section_id'],
-              ),
-            ),
+        builder: (_) => BlocProvider(
+          create: (context) => QuestionLangugeCubit(getIt()),
+          child: Homescreen(
+            sectionName: args['sectionName'],
+            sectionImage: args['sectionImage'],
+            sectionId: args['section_id'],
+          ),
+        ),
       );
     case QuestionScreen.routeName:
       final args = settings.arguments as Map<String, dynamic>;
@@ -56,7 +59,12 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
 
     case VocabularyScreen.routeName:
-      return MaterialPageRoute(builder: (context) => VocabularyScreen());
+      final args = settings.arguments as Map<String, dynamic>;
+      return MaterialPageRoute(
+        builder: (context) => VocabularyScreen(
+          sectionName: args['sectionName'],
+        ),
+      );
 
     case ImageQuestionScreen.routeName:
       final args = settings.arguments as Map<String, dynamic>;
