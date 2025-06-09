@@ -376,11 +376,7 @@ class _AIScreenState extends State<AIScreen> {
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.grey.shade200),
                   child: const Text("Reset", style: TextStyle(color: Colors.black)),
                 ),
-                ElevatedButton(
-                  onPressed: testSample,
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.amber.shade100),
-                  child: const Text("🧪 Test Sample", style: TextStyle(color: Colors.black)),
-                ),
+               
               ],
             ),
             const SizedBox(height: 30),
@@ -390,27 +386,3 @@ class _AIScreenState extends State<AIScreen> {
     );
   }
 }
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: const [
-        CircleAvatar(radius: 40, child: Icon(Icons.person, size: 40)),
-        SizedBox(height: 10),
-        Center(child: Text("Username: John Doe")),
-        Center(child: Text("Email: john@example.com")),
-        SizedBox(height: 20),
-        Divider(),
-        ListTile(
-          leading: Icon(Icons.logout),
-          title: Text("Logout"),
-        ),
-      ],
-    );
-  }
-}
-
-

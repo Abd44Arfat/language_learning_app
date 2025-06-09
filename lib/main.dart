@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:launguagelearning/core/helper-function/gei_it_service.dart';
 import 'package:launguagelearning/core/helper-function/on_generate_route.dart';
 import 'package:launguagelearning/features/auth/manager/cubit/auth_cubit.dart';
@@ -26,10 +27,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthCubit(getIt()),
-      child: MaterialApp(
-        // SplashScreen
-        // initialRoute: SplashScreen.routeName,
-         initialRoute: SplashScreen2.routeName, onGenerateRoute: onGenerateRoute,
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            initialRoute: SplashScreen2.routeName,
+            onGenerateRoute: onGenerateRoute,
+          );
+        },
       ),
     );
   }

@@ -19,17 +19,17 @@ class _SplashScreen2State extends State<SplashScreen2> {
   }
 
   Future<void> _checkTokenAndNavigate() async {
+    // Add a delay to show the splash screen
+    await Future.delayed(const Duration(seconds: 2));
+    
+    if (!mounted) return;
+    
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('access_token');
     
-    if (mounted) {
-      if (token != null && token.isNotEmpty) {
-        // Token exists, navigate to levels screen
-        Navigator.pushReplacementNamed(context, LevelsScreen.routeName);
-      } else {
-        // No token, navigate to sign in
-        Navigator.pushReplacementNamed(context, SignIn.routeName);
-      }
+    if (token != null && token.isNotEmpty) {
+      // Token exists, navigate to levels screen
+      Navigator.pushReplacementNamed(context, LevelsScreen.routeName);
     }
   }
 
@@ -97,9 +97,29 @@ class _SplashScreen2State extends State<SplashScreen2> {
                   const SizedBox(height: 32),
 
                   // Loading indicator while checking token
-                  const Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                 
+
+                  const SizedBox(height: 24),
+
+                  // Sign In Button
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, SignIn.routeName);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.blue,
+                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: const Text(
+                      'Get Started',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
 

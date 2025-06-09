@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:launguagelearning/core/utils/styles.dart';
 
 class VocabularyScreen extends StatelessWidget {
   const VocabularyScreen({super.key, required this.sectionName});
@@ -7,31 +6,22 @@ class VocabularyScreen extends StatelessWidget {
 
   final String sectionName;
 
-  // Static vocabulary data
   final List<Map<String, dynamic>> vocabularyItems = const [
     {
-      'word': 'Hello',
-      'translation': 'مرحبا',
-      'image': 'assets/images/Duck.jpg',
-      'color': Color(0xFFFFB6C1), // Light pink
+      'word': 'Lion',
+      'image': 'https://static.vecteezy.com/system/resources/previews/027/695/949/non_2x/lion-symbol-cute-lion-cartoon-vector.jpg',
     },
     {
-      'word': 'Goodbye',
-      'translation': 'مع السلامة',
-      'image': 'assets/images/Duck.jpg',
-      'color': Color(0xFF98FB98), // Pale green
+      'word': 'Giraffe',
+      'image': 'https://img.freepik.com/free-vector/hand-drawn-cartoon-giraffe-illustration_23-2150368576.jpg?semt=ais_items_boosted&w=740',
     },
     {
-      'word': 'Thank you',
-      'translation': 'شكرا',
-      'image': 'assets/images/Duck.jpg',
-      'color': Color(0xFFFFD700), // Gold
+      'word': 'Duck',
+      'image': 'https://i.pinimg.com/736x/ff/91/58/ff91583814612053bc1b76b0c65a6b57.jpg',
     },
     {
-      'word': 'Please',
-      'translation': 'من فضلك',
-      'image': 'assets/images/Duck.jpg',
-      'color': Color(0xFF87CEEB), // Sky blue
+      'word': 'Monkey',
+      'image': 'https://www.shutterstock.com/image-vector/young-cute-monkey-baby-sweet-600nw-2270033121.jpg',
     },
   ];
 
@@ -49,64 +39,80 @@ class VocabularyScreen extends StatelessWidget {
           crossAxisCount: 2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
-          childAspectRatio: 0.8,
+          childAspectRatio: 0.7,
         ),
         itemCount: vocabularyItems.length,
         itemBuilder: (context, index) {
-          final item = vocabularyItems[index];
-          return Container(
-            height: 300,
-            decoration: BoxDecoration(
-              color: item['color'],
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
+          final section = vocabularyItems[index];
+          return GestureDetector(
+            onTap: () {
+              // Handle tap
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
                   ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      item['image'],
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => const Icon(
-                        Icons.image,
-                        size: 50,
-                        color: Colors.grey,
+                ],
+              ),
+              child: Column(
+                children: [
+                  // Image container taking most of the space
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                        child: Image.network(
+                          section['image'],
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => const Icon(
+                            Icons.image,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  item['word'],
-                  style: TextStyles.font16Blackbold,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  item['translation'],
-                  style: TextStyles.font15BlackMedium,
-                ),
-              ],
+                  // Word container at the bottom
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(20),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          section['word'],
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
